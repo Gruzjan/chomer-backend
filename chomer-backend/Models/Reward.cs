@@ -8,7 +8,6 @@
         public int? Quantity { get; set; }
         //icon
         public int HouseId { get; set; }
-        public House House { get; set; }
 
     }
 }

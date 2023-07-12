@@ -7,8 +7,8 @@ namespace chomer_backend.Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Chore> Chores { get; set; }
-        public DbSet<Chore> Houses { get; set; }
-        public DbSet<HouseUser> UserHouses { get; set; }
+        public DbSet<House> Houses { get; set; }
+        public DbSet<HouseUser> HouseUsers { get; set; }
         public DbSet<User> Users { get; set; }
     }
 }

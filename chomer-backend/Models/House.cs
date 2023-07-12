@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public List<HouseUser> Users { get; set; }
+        public int OwnerId { get; set; }
         //invite link or smth
     }
 }

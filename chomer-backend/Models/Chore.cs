@@ -6,8 +6,9 @@
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public int Value { get; set; }
-        public User CreatedBy { get; set; }
-        public User? AssignedTo { get; set; }
+        public int HouseId { get; set; }
+        public int CreatedById { get; set; }
+        public int? AssignedToId { get; set; }
         //icon
     }
 }
