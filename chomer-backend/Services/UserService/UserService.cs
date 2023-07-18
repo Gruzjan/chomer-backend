@@ -22,7 +22,7 @@ namespace chomer_backend.Services.UserService
         public async Task<List<User>?> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
-            if (user == null) 
+            if (user == null)
                 return null;
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();

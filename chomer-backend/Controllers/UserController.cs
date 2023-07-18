@@ -12,7 +12,7 @@ namespace chomer_backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
-        public UserController(IUserService service) 
+        public UserController(IUserService service)
         {
             _service = service;
         }

@@ -31,7 +31,7 @@ namespace chomer_backend.Services.HouseService
         public async Task<House?> GetHouseById(int houseId)
         {
             var house = await _context.Houses.FindAsync(houseId);
-            if(house == null)
+            if (house == null)
                 return null;
             return house;
         }
@@ -45,6 +45,8 @@ namespace chomer_backend.Services.HouseService
         {
             var house = await _context.Houses.FindAsync(houseId);
             if (house == null)
+                return null;
+            if (request == null)
                 return null;
             house.OwnerId = request.OwnerId;
             house.Name = request.Name;
