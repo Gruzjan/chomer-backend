@@ -1,7 +1,14 @@
-﻿namespace chomer_backend.Services.ChoreService
+﻿using chomer_backend.Models;
+
+namespace chomer_backend.Services.ChoreService
 {
     public interface IChoreService
     {
+        Task<List<Chore>> CreateChore(Chore chore);
+        Task<List<Chore>> GetChores();
+        Task<Chore?> GetChoreById(int id);
+        Task<Chore?> UpdateChore(int id, Chore request);
+        Task<List<Chore>?> DeleteChore(int id);
 
     }
 }

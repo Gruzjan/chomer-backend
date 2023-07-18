@@ -17,6 +17,7 @@ namespace chomer_backend
             builder.Services.AddControllers();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IHouseService, HouseService>();
+            builder.Services.AddScoped<IChoreService, ChoreService>();
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
