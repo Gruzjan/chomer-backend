@@ -18,7 +18,7 @@ namespace chomer_backend.Services.HouseService
             return await _context.Houses.ToListAsync();
         }
 
-        public async Task<List<House>> DeleteHouse(int houseId)
+        public async Task<List<House>?> DeleteHouse(int houseId)
         {
             var house = await _context.Houses.FindAsync(houseId);
             if (house == null)
@@ -28,10 +28,25 @@ namespace chomer_backend.Services.HouseService
             return await _context.Houses.ToListAsync();
         }
 
-        public async Task<List<House>> UpdateHouse(int houseId, House request)
+        public async Task<House?> GetHouseById(int houseId)
         {
             var house = await _context.Houses.FindAsync(houseId);
             if (house == null)
+                return null;
+            return house;
+        }
+
+        public Task<List<House>> GetHouses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<House>?> UpdateHouse(int houseId, House request)
+        {
+            var house = await _context.Houses.FindAsync(houseId);
+            if (house == null)
+                return null;
+            if (request == null)
                 return null;
             house.OwnerId = request.OwnerId;
             house.Name = request.Name;

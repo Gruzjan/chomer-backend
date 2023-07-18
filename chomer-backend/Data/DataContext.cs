@@ -10,5 +10,6 @@ namespace chomer_backend.Data
         public DbSet<House> Houses { get; set; }
         public DbSet<HouseUser> HouseUsers { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Reward> Rewards { get; set; }
     }
 }
