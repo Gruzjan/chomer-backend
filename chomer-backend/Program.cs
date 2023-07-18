@@ -1,5 +1,6 @@
 using chomer_backend.Data;
 using chomer_backend.Services.ChoreService;
+using chomer_backend.Services.HouseService;
 using chomer_backend.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace chomer_backend
             // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IHouseService, HouseService>();
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
