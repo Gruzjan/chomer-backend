@@ -1,4 +1,6 @@
-﻿namespace chomer_backend.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace chomer_backend.Models
 {
     public class Reward
     {
@@ -7,6 +9,7 @@
         public int Cost { get; set; }
         public int? Quantity { get; set; }
         //icon
+        [ForeignKey(nameof(House))]
         public int HouseId { get; set; }
 
     }

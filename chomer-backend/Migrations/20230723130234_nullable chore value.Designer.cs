@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chomer_backend.Data;
 
@@ -11,9 +12,11 @@ using chomer_backend.Data;
 namespace chomer_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230723130234_nullable chore value")]
+    partial class nullablechorevalue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,25 +55,6 @@ namespace chomer_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chores");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AssignedToId = 1,
-                            CreatedById = 2,
-                            Description = "Whole villa otherwise I will not count it <3",
-                            HouseId = 1,
-                            Name = "Vaccum",
-                            Value = 100
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedById = 2,
-                            HouseId = 1,
-                            Name = "Dishwasher"
-                        });
                 });
 
             modelBuilder.Entity("chomer_backend.Models.House", b =>
@@ -123,6 +107,8 @@ namespace chomer_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("HouseUsers");
 
                     b.HasData(
@@ -132,23 +118,15 @@ namespace chomer_backend.Migrations
                             HouseId = 1,
                             IsAdmin = true,
                             Points = 0,
-                            UserId = 1
+                            UserId = 2
                         },
                         new
                         {
                             Id = 2,
                             HouseId = 1,
-                            IsAdmin = true,
-                            Points = 0,
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            HouseId = 1,
                             IsAdmin = false,
                             Points = 0,
-                            UserId = 3
+                            UserId = 1
                         });
                 });
 
@@ -176,23 +154,6 @@ namespace chomer_backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rewards");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Cost = 2000,
-                            HouseId = 1,
-                            Name = "Holiday trip",
-                            Quantity = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Cost = 200,
-                            HouseId = 1,
-                            Name = "Ice cream"
-                        });
                 });
 
             modelBuilder.Entity("chomer_backend.Models.User", b =>
@@ -233,14 +194,21 @@ namespace chomer_backend.Migrations
                             Email = "gustav@gmail.com",
                             Name = "Gustavo",
                             Password = "Gusword"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "walt@gmail.com",
-                            Name = "Walter",
-                            Password = "Walword"
                         });
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.HouseUser", b =>
+                {
+                    b.HasOne("chomer_backend.Models.User", null)
+                        .WithMany("HouseUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.User", b =>
+                {
+                    b.Navigation("HouseUsers");
                 });
 #pragma warning restore 612, 618
         }
