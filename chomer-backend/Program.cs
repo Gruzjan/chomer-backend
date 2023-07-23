@@ -5,6 +5,7 @@ using chomer_backend.Services.HouseUserService;
 using chomer_backend.Services.UserService;
 using chomer_backend.Services.RewardService;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace chomer_backend
 {
@@ -16,6 +17,13 @@ namespace chomer_backend
             //TODO: change return types; add auth; generic types
 
             // Add services to the container.
+            var logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog(logger);
+
             builder.Services.AddControllers();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IHouseService, HouseService>();
