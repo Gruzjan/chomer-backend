@@ -36,9 +36,9 @@ namespace chomer_backend.Services.HouseService
             return house;
         }
 
-        public Task<List<House>> GetHouses()
+        public async Task<List<House>> GetHouses()
         {
-            throw new NotImplementedException();
+            return await _context.Houses.ToListAsync();
         }
 
         public async Task<List<House>?> UpdateHouse(int houseId, House request)
