@@ -2,10 +2,8 @@
 
 namespace chomer_backend.Models.DTO
 {
-    public class ChoreDTO
+    public class CreateChoreDTO
     {
-        [Required(ErrorMessage = "Id is required.")]
-        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required.")]
         [StringLength(20, ErrorMessage = "Name must be between {2} and {1} characters.", MinimumLength = 1)]
         public string Name { get; set; } = string.Empty;
@@ -18,6 +16,10 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "CreatedById is required.")]
         public int CreatedById { get; set; }
         public int AssignedToId { get; set; }
-
+    }
+    public class ChoreDTO : CreateChoreDTO
+    {
+        [Required(ErrorMessage = "Id is required.")]
+        public int Id { get; set; }
     }
 }

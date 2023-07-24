@@ -17,6 +17,7 @@ namespace chomer_backend
             //TODO: change return types; add auth; generic types
 
             // Add services to the container.
+            //logger
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
                 .Enrich.FromLogContext()
@@ -24,16 +25,21 @@ namespace chomer_backend
             builder.Logging.ClearProviders();
             builder.Logging.AddSerilog(logger);
 
+            //controllers
             builder.Services.AddControllers();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IHouseService, HouseService>();
             builder.Services.AddScoped<IChoreService, ChoreService>();
             builder.Services.AddScoped<IHouseUserService, HouseUserService>();
             builder.Services.AddScoped<IRewardService, RewardService>();
+            //db
             builder.Services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            //automapper
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
