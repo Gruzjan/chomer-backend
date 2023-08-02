@@ -28,9 +28,13 @@ namespace chomer_backend.Services.HouseService
             return await _context.Houses.ToListAsync();
         }
 
-        public async Task<House?> GetHouseById(int houseId)
+        public async Task<House?> GetHouseById(int houseId, IList<string> includeProperties = null)
         {
-            var house = await _context.Houses.FindAsync(houseId);
+            var query = _context.Houses;
+            if (includeProperties != null)
+                foreach (var prop in includeProperties)
+                    query.Include(prop);
+            var house = await query.FirstOrDefaultAsync(h => h.Id == houseId);
             if (house == null)
                 return null;
             return house;

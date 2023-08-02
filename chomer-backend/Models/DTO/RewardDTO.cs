@@ -22,5 +22,7 @@ namespace chomer_backend.Models.DTO
     {
         [Required(ErrorMessage = "Id is required.")]
         public int Id { get; set; }
+        [Required(ErrorMessage = "House is required.")]
+        public House House { get; set; }
     }
 }

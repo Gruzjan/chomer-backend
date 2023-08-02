@@ -25,9 +25,13 @@ namespace chomer_backend.Services.RewardService
             return await _context.Rewards.ToListAsync();
         }
 
-        public async Task<Reward?> GetRewardById(int id)
+        public async Task<Reward?> GetRewardById(int id, IList<string> includeProperties = null)
         {
-            var reward = await _context.Rewards.FindAsync(id);
+            var query = _context.Rewards;
+            if (includeProperties != null)
+                foreach (var prop in includeProperties)
+                    query.Include(prop);
+            var reward = await query.FirstOrDefaultAsync(r => r.Id == id);
             if (reward == null)
                 return null;
             return reward;

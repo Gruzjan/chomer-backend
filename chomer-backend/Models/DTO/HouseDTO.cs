@@ -15,5 +15,13 @@ namespace chomer_backend.Models.DTO
     {
         [Required(ErrorMessage = "Id is required.")]
         public int Id { get; set; }
+        public User Owner { get; set; }
+        [Required(ErrorMessage = "Chores are required.")]
+        public IList<Chore> Chores { get; set; }
+        [Required(ErrorMessage = "HouseUsers are required.")]
+        public IList<HouseUser> HouseUsers { get; set; }
+        [Required(ErrorMessage = "Rewards are required.")]
+        public IList<Reward> Rewards { get; set; }
+
     }
 }

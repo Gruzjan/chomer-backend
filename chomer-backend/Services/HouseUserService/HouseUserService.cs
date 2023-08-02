@@ -36,9 +36,13 @@ namespace chomer_backend.Services.HouseUserService
             return await _context.HouseUsers.ToListAsync();
         }
 
-        public async Task<HouseUser?> GetHouseUserById(int id)
+        public async Task<HouseUser?> GetHouseUserById(int id, IList<string> includeProperties = null)
         {
-            var user = await _context.HouseUsers.FindAsync(id);
+            var query = _context.HouseUsers;
+            if (includeProperties != null)
+                foreach (var prop in includeProperties)
+                    query.Include(prop);
+            var user = await query.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
                 return null;
             return user;
@@ -46,7 +50,7 @@ namespace chomer_backend.Services.HouseUserService
 
         public async Task<List<HouseUser>?> GetHouseUsersByHouseId(int houseId)
         {
-            if(houseId == 0)
+            if (houseId == 0)
                 return null;
             return await _context.HouseUsers
                 .Where(hu => hu.HouseId == houseId)
@@ -58,7 +62,7 @@ namespace chomer_backend.Services.HouseUserService
             var user = await _context.HouseUsers.FindAsync(id);
             if (user == null)
                 return null;
-            if(request == null)
+            if (request == null)
                 return null;
             user.Points = request.Points;
             user.IsAdmin = request.IsAdmin;

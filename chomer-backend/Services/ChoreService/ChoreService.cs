@@ -17,9 +17,13 @@ namespace chomer_backend.Services.ChoreService
             await _context.SaveChangesAsync();
             return await _context.Chores.ToListAsync();
         }
-        public async Task<Chore?> GetChoreById(int id)
+        public async Task<Chore?> GetChoreById(int id, IList<string> includeProperties = null)
         {
-            var chore = await _context.Chores.FindAsync(id);
+            var query = _context.Chores;
+            if (includeProperties != null)
+                foreach (var prop in includeProperties)
+                    query.Include(prop);
+            var chore = await query.FirstOrDefaultAsync(c => c.Id == id);
             if (chore == null)
                 return null;
             return chore;

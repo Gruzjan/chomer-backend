@@ -6,7 +6,7 @@ namespace chomer_backend.Configurations
 {
     public class MapperInitializer : Profile
     {
-        public MapperInitializer() 
+        public MapperInitializer()
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<User, CreateUserDTO>().ReverseMap();

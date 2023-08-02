@@ -6,6 +6,7 @@ using chomer_backend.Services.UserService;
 using chomer_backend.Services.RewardService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Text.Json.Serialization;
 
 namespace chomer_backend
 {
@@ -17,6 +18,11 @@ namespace chomer_backend
             //TODO: change return types; add auth; generic types
 
             // Add services to the container.
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+
             //logger
             var logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(builder.Configuration)
