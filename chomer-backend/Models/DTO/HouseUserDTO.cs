@@ -22,8 +22,6 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "User is required.")]
         public User User { get; set; }
         [Required(ErrorMessage = "House is required.")]
-        public House house { get; set; }
-
-
+        public House House { get; set; }
     }
 }
