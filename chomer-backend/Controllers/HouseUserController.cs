@@ -13,7 +13,7 @@ namespace chomer_backend.Controllers
         private readonly IHouseUserService _service;
         public HouseUserController(IHouseUserService service)
         {
-            _service = service;    
+            _service = service;
         }
         [HttpPost]
         public async Task<ActionResult<List<HouseUser>>> CreateHouseUserByEmail(int houseId, string email)
@@ -44,7 +44,7 @@ namespace chomer_backend.Controllers
         public async Task<ActionResult<HouseUser>> UpdateHouseUser(int id, HouseUser request)
         {
             var result = await _service.UpdateHouseUser(id, request);
-            if (result == null) 
+            if (result == null)
                 return NotFound("Something went wrong.");
             return Ok(result);
         }

@@ -11,6 +11,7 @@ namespace chomer_backend.Models
         //icon
         [ForeignKey(nameof(House))]
         public int HouseId { get; set; }
+        public House House { get; set; } = null!;
 
     }
 }

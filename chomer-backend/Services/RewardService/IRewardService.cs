@@ -6,7 +6,7 @@ namespace chomer_backend.Services.RewardService
     {
         Task<List<Reward>> CreateReward(Reward reward);
         Task<List<Reward>> GetRewards();
-        Task<Reward?> GetRewardById(int id);
+        Task<Reward?> GetRewardById(int id, IList<string> includeProperties = null);
         Task<Reward?> UpdateReward(int id, Reward request);
         Task<List<Reward>?> DeleteReward(int id);
     }

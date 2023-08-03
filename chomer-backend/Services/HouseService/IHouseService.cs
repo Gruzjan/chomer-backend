@@ -7,7 +7,7 @@ namespace chomer_backend.Services.HouseService
         Task<List<House>> CreateHouse(House house);
         Task<List<House>?> UpdateHouse(int houseId, House request);
         Task<List<House>?> DeleteHouse(int houseId);
-        Task<House?> GetHouseById(int houseId);
+        Task<House?> GetHouseById(int houseId, IList<string> includeProperties = null);
         Task<List<House>> GetHouses();
     }
 }
