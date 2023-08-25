@@ -16,19 +16,19 @@ namespace chomer_backend.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<House>> CreateHouse(CreateHouseDTO house)
+        public async Task<ActionResult> CreateHouse(CreateHouseDTO house)
         {
             var result = await _service.CreateHouse(house);
             return Ok(result);
         }
         [HttpGet]
-        public async Task<ActionResult<List<House>>> GetHouses()
+        public async Task<ActionResult> GetHouses()
         {
             var result = await _service.GetHouses();
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<House>> DeleteHouse(int id)
+        public async Task<ActionResult> DeleteHouse(int id)
         {
             var result = await _service.DeleteHouse(id);
             if (result == null)
@@ -36,7 +36,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<House>> UpdateHouse(int id, House house)
+        public async Task<ActionResult> UpdateHouse(int id, House house)
         {
             var result = await _service.UpdateHouse(id, house);
             if (result == null)
@@ -44,7 +44,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<House>> GetHouseById(int id)
+        public async Task<ActionResult> GetHouseById(int id)
         {
             var result = await _service.GetHouseById(id);
             if (result == null)

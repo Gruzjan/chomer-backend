@@ -20,16 +20,14 @@ namespace chomer_backend.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-
         [HttpPost]
-        public async Task<ActionResult<Reward>> CreateReward(Reward reward)
+        public async Task<ActionResult> CreateReward(Reward reward)
         {
             var result = await _service.CreateReward(reward);
             return Ok(result);
         }
-
         [HttpGet]
-        public async Task<ActionResult<List<Reward>>> GetRewards()
+        public async Task<ActionResult> GetRewards()
         {
             try
             {
@@ -43,9 +41,8 @@ namespace chomer_backend.Controllers
                 return StatusCode(500, "Something went wrong. Please try again later.");
             }
         }
-
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reward>> GetRewardById(int id)
+        public async Task<ActionResult> GetRewardById(int id)
         {
             try
             {
@@ -62,7 +59,7 @@ namespace chomer_backend.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<Reward>> UpdateReward(int id, Reward request)
+        public async Task<ActionResult> UpdateReward(int id, Reward request)
         {
             var result = await _service.UpdateReward(id, request);
             if (result == null)
@@ -70,7 +67,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Reward>> DeleteReward(int id)
+        public async Task<ActionResult> DeleteReward(int id)
         {
             var result = await _service.DeleteReward(id);
             if (result == null)

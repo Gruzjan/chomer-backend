@@ -1,4 +1,6 @@
-﻿using chomer_backend.Models;
+﻿using AutoMapper;
+using chomer_backend.Models;
+using chomer_backend.Models.DTO;
 using chomer_backend.Services.ChoreService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,24 +13,28 @@ namespace chomer_backend.Controllers
     public class ChoreController : ControllerBase
     {
         private readonly IChoreService _service;
-        public ChoreController(IChoreService service)
+        private readonly IMapper _mapper;
+        public ChoreController(IChoreService service, IMapper mapper)
         {
             _service = service;
+            _mapper = mapper;
         }
         [HttpPost]
-        public async Task<ActionResult<Chore>> CreateChore(Chore chore)
+        public async Task<ActionResult> CreateChore(CreateChoreDTO choreDTO)
         {
+            var chore = _mapper.Map<Chore>(choreDTO);
             var result = await _service.CreateChore(chore);
             return Ok(result);
         }
         [HttpGet]
-        public async Task<ActionResult<List<Chore>>> GetChores()
+        public async Task<ActionResult> GetChores()
         {
-            var result = await _service.GetChores();
+            var chores = await _service.GetChores();
+            var result = _mapper.Map<List<ChoreDTO>>(chores);
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Chore>> GetChoreById(int id)
+        public async Task<ActionResult> GetChoreById(int id)
         {
             var result = await _service.GetChoreById(id);
             if (result == null)
@@ -36,7 +42,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<Chore>> UpdateChore(int id, Chore request)
+        public async Task<ActionResult> UpdateChore(int id, Chore request)
         {
             var result = await _service.UpdateChore(id, request);
             if (result == null)
@@ -44,7 +50,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Chore?>> DeleteChore(int id)
+        public async Task<ActionResult> DeleteChore(int id)
         {
             var result = await _service.DeleteChore(id);
             if (result == null)
