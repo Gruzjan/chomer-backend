@@ -11,12 +11,17 @@ namespace chomer_backend.Services.ChoreService
         {
             _context = context;
         }
-        public async Task<List<Chore>> CreateChore(Chore chore)
+        public async Task<Chore> CreateChore(Chore chore)
         {
             _context.Chores.Add(chore);
             await _context.SaveChangesAsync();
+            return chore;
+        }
+        public async Task<List<Chore>> GetChores()
+        {
             return await _context.Chores.ToListAsync();
         }
+
         public async Task<Chore?> GetChoreById(int id, IList<string> includeProperties = null)
         {
             var query = _context.Chores;
@@ -27,11 +32,6 @@ namespace chomer_backend.Services.ChoreService
             if (chore == null)
                 return null;
             return chore;
-        }
-
-        public async Task<List<Chore>> GetChores()
-        {
-            return await _context.Chores.ToListAsync();
         }
 
         public async Task<Chore?> UpdateChore(int id, Chore request)
@@ -46,14 +46,14 @@ namespace chomer_backend.Services.ChoreService
             await _context.SaveChangesAsync();
             return chore;
         }
-        public async Task<List<Chore>?> DeleteChore(int id)
+        public async Task<Chore?> DeleteChore(int id)
         {
             var chore = await _context.Chores.FindAsync(id);
             if (chore == null)
                 return null;
             _context.Chores.Remove(chore);
             await _context.SaveChangesAsync();
-            return await _context.Chores.ToListAsync();
+            return chore;
         }
     }
 }

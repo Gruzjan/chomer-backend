@@ -4,10 +4,10 @@ namespace chomer_backend.Services.RewardService
 {
     public interface IRewardService
     {
-        Task<List<Reward>> CreateReward(Reward reward);
+        Task<Reward> CreateReward(Reward reward);
         Task<List<Reward>> GetRewards();
         Task<Reward?> GetRewardById(int id, IList<string> includeProperties = null);
         Task<Reward?> UpdateReward(int id, Reward request);
-        Task<List<Reward>?> DeleteReward(int id);
+        Task<Reward?> DeleteReward(int id);
     }
 }

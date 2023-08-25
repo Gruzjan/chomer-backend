@@ -15,7 +15,7 @@ namespace chomer_backend
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            //TODO: change return types; add auth; generic types
+            //TODO: add auth; generic types
 
             // Add services to the container.
             builder.Services.AddControllers().AddJsonOptions(options =>

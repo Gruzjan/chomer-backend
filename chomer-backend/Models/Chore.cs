@@ -11,12 +11,12 @@ namespace chomer_backend.Models
         [ForeignKey(nameof(House))]
         public int HouseId { get; set; }
         public House House { get; set; } = null!;
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(CreatedBy))]
         public int CreatedById { get; set; }
-        public User CreatedBy { get; set; } = null!;
-        [ForeignKey(nameof(User))]
+        public HouseUser CreatedBy { get; set; } = null!;
+        [ForeignKey(nameof(AssignedTo))]
         public int? AssignedToId { get; set; }
-        public User? AssignedTo { get; set; }
+        public HouseUser? AssignedTo { get; set; }
         //icon
     }
 }

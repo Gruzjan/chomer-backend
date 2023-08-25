@@ -11,8 +11,26 @@ namespace chomer_backend.Services.HouseUserService
         {
             _context = context;
         }
-
-        public async Task<List<HouseUser>?> CreateHouseUserByEmail(int houseId, string email)
+        public async Task<HouseUser?> CreateHouseUserByUserId(int houseId, int userId, bool isAdmin = false)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+                return null;
+            var house = await _context.Houses.FindAsync(houseId);
+            if (house == null)
+                return null;
+            var houseUser = _context.HouseUsers.Add(new HouseUser
+            {
+                HouseId = houseId,
+                UserId = user.Id,
+                House = house,
+                User = user,
+                IsAdmin = isAdmin
+            });
+            await _context.SaveChangesAsync();
+            return houseUser.Entity;
+        }
+        public async Task<HouseUser?> CreateHouseUserByEmail(int houseId, string email, bool isAdmin = false)
         {
             var user = await _context.Users
                 .Where(u => u.Email.Equals(email))
@@ -26,16 +44,17 @@ namespace chomer_backend.Services.HouseUserService
             {
                 HouseId = houseId,
                 UserId = user.Id,
+                House = house,
+                User = user,
+                IsAdmin = isAdmin
             });
             await _context.SaveChangesAsync();
-            return await _context.HouseUsers.ToListAsync();
+            return houseUser.Entity;
         }
-
         public async Task<List<HouseUser>> GetHouseUsers()
         {
             return await _context.HouseUsers.ToListAsync();
         }
-
         public async Task<HouseUser?> GetHouseUserById(int id, IList<string> includeProperties = null)
         {
             var query = _context.HouseUsers;
@@ -47,7 +66,6 @@ namespace chomer_backend.Services.HouseUserService
                 return null;
             return user;
         }
-
         public async Task<List<HouseUser>?> GetHouseUsersByHouseId(int houseId)
         {
             if (houseId == 0)
@@ -56,7 +74,6 @@ namespace chomer_backend.Services.HouseUserService
                 .Where(hu => hu.HouseId == houseId)
                 .ToListAsync();
         }
-
         public async Task<HouseUser?> UpdateHouseUser(int id, HouseUser request)
         {
             var user = await _context.HouseUsers.FindAsync(id);
@@ -69,15 +86,14 @@ namespace chomer_backend.Services.HouseUserService
             await _context.SaveChangesAsync();
             return user;
         }
-
-        public async Task<List<HouseUser>?> DeleteHouseUser(int id)
+        public async Task<HouseUser?> DeleteHouseUser(int id)
         {
             var user = await _context.HouseUsers.FindAsync(id);
             if (user == null)
                 return null;
             _context.HouseUsers.Remove(user);
             await _context.SaveChangesAsync();
-            return await _context.HouseUsers.ToListAsync();
+            return user;
         }
     }
 }

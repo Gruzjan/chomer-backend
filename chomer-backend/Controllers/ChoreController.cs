@@ -16,7 +16,7 @@ namespace chomer_backend.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<List<Chore>>> CreateChore(Chore chore)
+        public async Task<ActionResult<Chore>> CreateChore(Chore chore)
         {
             var result = await _service.CreateChore(chore);
             return Ok(result);
@@ -44,7 +44,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Chore>?>> DeleteChore(int id)
+        public async Task<ActionResult<Chore?>> DeleteChore(int id)
         {
             var result = await _service.DeleteChore(id);
             if (result == null)

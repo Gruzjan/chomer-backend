@@ -12,19 +12,16 @@ namespace chomer_backend.Services.RewardService
         {
             _context = context;
         }
-
-        public async Task<List<Reward>> CreateReward(Reward reward)
+        public async Task<Reward> CreateReward(Reward reward)
         {
             await _context.AddAsync(reward);
             await _context.SaveChangesAsync();
-            return await _context.Rewards.ToListAsync();
+            return reward;
         }
-
         public async Task<List<Reward>> GetRewards()
         {
             return await _context.Rewards.ToListAsync();
         }
-
         public async Task<Reward?> GetRewardById(int id, IList<string> includeProperties = null)
         {
             var query = _context.Rewards;
@@ -36,7 +33,6 @@ namespace chomer_backend.Services.RewardService
                 return null;
             return reward;
         }
-
         public async Task<Reward?> UpdateReward(int id, Reward request)
         {
             var reward = await _context.Rewards.FindAsync(id);
@@ -48,16 +44,14 @@ namespace chomer_backend.Services.RewardService
             await _context.SaveChangesAsync();
             return reward;
         }
-
-        public async Task<List<Reward>?> DeleteReward(int id)
+        public async Task<Reward?> DeleteReward(int id)
         {
             var reward = await _context.Rewards.FindAsync(id);
             if (reward == null)
                 return null;
             _context.Rewards.Remove(reward);
             await _context.SaveChangesAsync();
-            return await _context.Rewards.ToListAsync();
+            return reward;
         }
-
     }
 }

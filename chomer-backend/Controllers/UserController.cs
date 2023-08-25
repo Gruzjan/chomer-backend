@@ -1,5 +1,7 @@
-﻿using chomer_backend.Data;
+﻿using AutoMapper;
+using chomer_backend.Data;
 using chomer_backend.Models;
+using chomer_backend.Models.DTO;
 using chomer_backend.Services.UserService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +14,15 @@ namespace chomer_backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _service;
-        public UserController(IUserService service)
+        private readonly ILogger<UserController> _logger;
+        private readonly IMapper _mapper;
+        public UserController(IUserService service, ILogger<UserController> logger, IMapper mapper)
         {
             _service = service;
+            _logger = logger;
+            _mapper = mapper;
         }
+
         [HttpPost]
         public async Task<ActionResult<List<User>>> CreateUser(User user)
         {
@@ -25,15 +32,33 @@ namespace chomer_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUserById(int id)
         {
-            var result = await _service.GetUserById(id);
-            if (result == null) return NotFound("Couldn't find the user.");
-            return Ok(result);
+            try
+            {
+                var user = await _service.GetUserById(id);
+                if (user == null) return NotFound("Couldn't find the user.");
+                var result = _mapper.Map<UserDTO>(user);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(GetUserById)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpGet]
         public async Task<ActionResult<List<User>>> GetUsers()
         {
-            var result = await _service.GetUsers();
-            return Ok(result);
+            try
+            {
+                var users = await _service.GetUsers();
+                var result = _mapper.Map<List<UserDTO>>(users);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(GetUsers)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpPut("{id}")]
         public async Task<ActionResult<List<User>>> UpdateUser(int id, User request)

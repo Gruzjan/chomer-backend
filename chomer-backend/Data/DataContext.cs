@@ -14,6 +14,41 @@ namespace chomer_backend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Chore>()
+                .HasOne(ch => ch.AssignedTo)
+                .WithMany(hu => hu.AssignedChores)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Chore>()
+                .HasOne(ch => ch.CreatedBy)
+                .WithMany(hu => hu.CreatedChores)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Chore>()
+                .HasOne(ch => ch.House)
+                .WithMany(h => h.Chores)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<House>()
+                .HasOne(h => h.Owner)
+                .WithMany(u => u.Houses)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HouseUser>()
+               .HasOne(hu => hu.User)
+               .WithMany(u => u.HouseUsers)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<HouseUser>()
+               .HasOne(hu => hu.House)
+               .WithMany(h => h.HouseUsers)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Reward>()
+               .HasOne(r => r.House)
+               .WithMany(h => h.Rewards)
+               .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -103,6 +138,7 @@ namespace chomer_backend.Data
                     HouseId = 1
                 }
             );
+            //base.OnModelCreating(modelBuilder);
         }
     }
 }

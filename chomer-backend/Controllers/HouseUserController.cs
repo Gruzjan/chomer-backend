@@ -16,7 +16,7 @@ namespace chomer_backend.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<List<HouseUser>>> CreateHouseUserByEmail(int houseId, string email)
+        public async Task<ActionResult<HouseUser>> CreateHouseUserByEmail(int houseId, string email)
         {
             var result = await _service.CreateHouseUserByEmail(houseId, email);
             if (result == null)
@@ -32,14 +32,14 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<HouseUser>>> GetHouseUserById(int id)
+        public async Task<ActionResult<HouseUser>> GetHouseUserById(int id)
         {
+            //var result = await _service.GetHouseUserById(id, new List<string>() {"House"});
             var result = await _service.GetHouseUserById(id);
             if (result == null)
                 return NotFound("Couldn't find the user.");
             return Ok(result);
         }
-
         [HttpPut]
         public async Task<ActionResult<HouseUser>> UpdateHouseUser(int id, HouseUser request)
         {
@@ -48,9 +48,8 @@ namespace chomer_backend.Controllers
                 return NotFound("Something went wrong.");
             return Ok(result);
         }
-
         [HttpDelete]
-        public async Task<ActionResult<List<HouseUser>>> DeleteHouseUser(int id)
+        public async Task<ActionResult<HouseUser>> DeleteHouseUser(int id)
         {
             var result = await _service.DeleteHouseUser(id);
             if (result == null)

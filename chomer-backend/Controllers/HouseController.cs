@@ -1,4 +1,5 @@
 ﻿using chomer_backend.Models;
+using chomer_backend.Models.DTO;
 using chomer_backend.Services.HouseService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace chomer_backend.Controllers
             _service = service;
         }
         [HttpPost]
-        public async Task<ActionResult<List<House>>> CreateHouse(House house)
+        public async Task<ActionResult<House>> CreateHouse(CreateHouseDTO house)
         {
             var result = await _service.CreateHouse(house);
             return Ok(result);
@@ -27,7 +28,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<House>>> DeleteHouse(int id)
+        public async Task<ActionResult<House>> DeleteHouse(int id)
         {
             var result = await _service.DeleteHouse(id);
             if (result == null)
@@ -35,7 +36,7 @@ namespace chomer_backend.Controllers
             return Ok(result);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<List<House>>> UpdateHouse(int id, House house)
+        public async Task<ActionResult<House>> UpdateHouse(int id, House house)
         {
             var result = await _service.UpdateHouse(id, house);
             if (result == null)
