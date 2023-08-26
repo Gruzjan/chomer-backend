@@ -12,8 +12,8 @@ using chomer_backend.Data;
 namespace chomer_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230723130234_nullable chore value")]
-    partial class nullablechorevalue
+    [Migration("20230820143640_inital")]
+    partial class inital
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,7 +54,32 @@ namespace chomer_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssignedToId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("HouseId");
+
                     b.ToTable("Chores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AssignedToId = 1,
+                            CreatedById = 2,
+                            Description = "Whole villa otherwise I will not count it <3",
+                            HouseId = 1,
+                            Name = "Vaccum",
+                            Value = 100
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedById = 2,
+                            HouseId = 1,
+                            Name = "Dishwasher"
+                        });
                 });
 
             modelBuilder.Entity("chomer_backend.Models.House", b =>
@@ -73,6 +98,8 @@ namespace chomer_backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Houses");
 
@@ -107,6 +134,8 @@ namespace chomer_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HouseId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("HouseUsers");
@@ -118,15 +147,23 @@ namespace chomer_backend.Migrations
                             HouseId = 1,
                             IsAdmin = true,
                             Points = 0,
-                            UserId = 2
+                            UserId = 1
                         },
                         new
                         {
                             Id = 2,
                             HouseId = 1,
+                            IsAdmin = true,
+                            Points = 0,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            HouseId = 1,
                             IsAdmin = false,
                             Points = 0,
-                            UserId = 1
+                            UserId = 3
                         });
                 });
 
@@ -153,7 +190,26 @@ namespace chomer_backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HouseId");
+
                     b.ToTable("Rewards");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cost = 2000,
+                            HouseId = 1,
+                            Name = "Holiday trip",
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cost = 200,
+                            HouseId = 1,
+                            Name = "Ice cream"
+                        });
                 });
 
             modelBuilder.Entity("chomer_backend.Models.User", b =>
@@ -194,21 +250,104 @@ namespace chomer_backend.Migrations
                             Email = "gustav@gmail.com",
                             Name = "Gustavo",
                             Password = "Gusword"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "walt@gmail.com",
+                            Name = "Walter",
+                            Password = "Walword"
                         });
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.Chore", b =>
+                {
+                    b.HasOne("chomer_backend.Models.HouseUser", "AssignedTo")
+                        .WithMany("AssignedChores")
+                        .HasForeignKey("AssignedToId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("chomer_backend.Models.HouseUser", "CreatedBy")
+                        .WithMany("CreatedChores")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("chomer_backend.Models.House", "House")
+                        .WithMany("Chores")
+                        .HasForeignKey("HouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AssignedTo");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("House");
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.House", b =>
+                {
+                    b.HasOne("chomer_backend.Models.User", "Owner")
+                        .WithMany("Houses")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("chomer_backend.Models.HouseUser", b =>
                 {
-                    b.HasOne("chomer_backend.Models.User", null)
+                    b.HasOne("chomer_backend.Models.House", "House")
+                        .WithMany("HouseUsers")
+                        .HasForeignKey("HouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("chomer_backend.Models.User", "User")
                         .WithMany("HouseUsers")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("House");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.Reward", b =>
+                {
+                    b.HasOne("chomer_backend.Models.House", "House")
+                        .WithMany("Rewards")
+                        .HasForeignKey("HouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("House");
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.House", b =>
+                {
+                    b.Navigation("Chores");
+
+                    b.Navigation("HouseUsers");
+
+                    b.Navigation("Rewards");
+                });
+
+            modelBuilder.Entity("chomer_backend.Models.HouseUser", b =>
+                {
+                    b.Navigation("AssignedChores");
+
+                    b.Navigation("CreatedChores");
                 });
 
             modelBuilder.Entity("chomer_backend.Models.User", b =>
                 {
                     b.Navigation("HouseUsers");
+
+                    b.Navigation("Houses");
                 });
 #pragma warning restore 612, 618
         }

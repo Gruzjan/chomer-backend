@@ -13,5 +13,8 @@ namespace chomer_backend.Models
         public int HouseId { get; set; }
         public House House { get; set; } = null!;
         public bool IsAdmin { get; set; } = false;
+        public virtual IList<Chore> AssignedChores { get; set; }
+        public virtual IList<Chore> CreatedChores { get; set; }
+
     }
 }

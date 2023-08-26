@@ -4,10 +4,10 @@ namespace chomer_backend.Services.UserService
 {
     public interface IUserService
     {
-        Task<List<User>> CreateUser(User user);
-        Task<List<User>?> UpdateUser(int id, User request);
-        Task<List<User>?> DeleteUser(int id);
-        Task<User?> GetUserById(int id);
+        Task<User> CreateUser(User user);
         Task<List<User>> GetUsers();
+        Task<User?> GetUserById(int id);
+        Task<User?> UpdateUser(int id, User request);
+        Task<User?> DeleteUser(int id);
     }
 }

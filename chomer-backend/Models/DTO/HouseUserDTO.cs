@@ -14,7 +14,12 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "Bool IsAdmin is required.")]
         public bool IsAdmin { get; set; } = false;
     }
-
+    public class UpdateHouseUserDTO 
+    {
+        [Range(0, int.MaxValue, ErrorMessage = "Points must be positive.")]
+        public int? Points { get; set; }
+        public bool? IsAdmin { get; set; }
+    }
     public class HouseUserDTO : CreateHouseUserDTO
     {
         [Required(ErrorMessage = "Id is required.")]

@@ -12,23 +12,23 @@ namespace chomer_backend.Services.UserService
         {
             _context = context;
         }
-        public async Task<List<User>> CreateUser(User user)
+        public async Task<User> CreateUser(User user)
         {
             _context.Add(user);
             await _context.SaveChangesAsync();
-            return await _context.Users.ToListAsync();
+            return user;
         }
-
-        public async Task<List<User>?> DeleteUser(int id)
+        public async Task<User?> DeleteUser(int id)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
                 return null;
+            _context.Houses.RemoveRange(user.Houses);
+            _context.HouseUsers.RemoveRange(user.HouseUsers);
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return await _context.Users.ToListAsync();
+            return user;
         }
-
         public async Task<User?> GetUserById(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -36,13 +36,11 @@ namespace chomer_backend.Services.UserService
                 return null;
             return user;
         }
-
         public async Task<List<User>> GetUsers()
         {
             return await _context.Users.ToListAsync();
         }
-
-        public async Task<List<User>?> UpdateUser(int id, User request)
+        public async Task<User?> UpdateUser(int id, User request)
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
@@ -53,7 +51,7 @@ namespace chomer_backend.Services.UserService
             user.Email = request.Email;
             user.Password = request.Password;
             await _context.SaveChangesAsync();
-            return await _context.Users.ToListAsync();
+            return user;
         }
     }
 }

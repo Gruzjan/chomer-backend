@@ -10,8 +10,13 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "OwnerId is required.")]
         public int OwnerId { get; set; }
     }
-
-    public class HouseDTO
+    public class UpdateHouseDTO
+    {
+        [StringLength(20, ErrorMessage = "Name must be between {2} and {1} characters.", MinimumLength = 1)]
+        public string? Name { get; set; }
+        public int? OwnerId { get; set; }
+    }
+    public class HouseDTO : CreateHouseDTO
     {
         [Required(ErrorMessage = "Id is required.")]
         public int Id { get; set; }

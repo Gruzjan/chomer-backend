@@ -1,5 +1,8 @@
-﻿using chomer_backend.Data;
+﻿using AutoMapper;
+using chomer_backend.Data;
 using chomer_backend.Models;
+using chomer_backend.Models.DTO;
+using chomer_backend.Services.HouseUserService;
 using Microsoft.EntityFrameworkCore;
 
 namespace chomer_backend.Services.HouseService
@@ -7,27 +10,32 @@ namespace chomer_backend.Services.HouseService
     public class HouseService : IHouseService
     {
         private readonly DataContext _context;
-        public HouseService(DataContext context)
+        private readonly IHouseUserService _HUservice;
+        private readonly IMapper _mapper;
+        public HouseService(DataContext context, IHouseUserService service, IMapper mapper)
         {
+            _HUservice = service;
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<List<House>> CreateHouse(House house)
+        public async Task<House?> CreateHouse(CreateHouseDTO house)
         {
-            _context.Houses.Add(house);
-            await _context.SaveChangesAsync();
-            return await _context.Houses.ToListAsync();
-        }
-
-        public async Task<List<House>?> DeleteHouse(int id)
-        {
-            var house = await _context.Houses.FindAsync(id);
-            if (house == null)
+            var result = _mapper.Map<House>(house);
+            var user = await _context.Users.FindAsync(result.OwnerId);
+            if (user == null)
                 return null;
-            _context.Houses.Remove(house);
+            _context.Houses.Add(result);
             await _context.SaveChangesAsync();
+            var houseuser = await _HUservice.CreateHouseUserByUserId(result.Id, result.OwnerId, true);
+            if (houseuser == null)
+                return null;
+            await _context.SaveChangesAsync();
+            return result;
+        }
+        public async Task<List<House>> GetHouses()
+        {
             return await _context.Houses.ToListAsync();
         }
-
         public async Task<House?> GetHouseById(int id, IList<string> includeProperties = null)
         {
             var query = _context.Houses;
@@ -39,13 +47,7 @@ namespace chomer_backend.Services.HouseService
                 return null;
             return house;
         }
-
-        public async Task<List<House>> GetHouses()
-        {
-            return await _context.Houses.ToListAsync();
-        }
-
-        public async Task<List<House>?> UpdateHouse(int id, House request)
+        public async Task<House?> UpdateHouse(int id, House request)
         {
             var house = await _context.Houses.FindAsync(id);
             if (house == null)
@@ -55,7 +57,19 @@ namespace chomer_backend.Services.HouseService
             house.OwnerId = request.OwnerId;
             house.Name = request.Name;
             await _context.SaveChangesAsync();
-            return await _context.Houses.ToListAsync();
+            return house;
+        }
+        public async Task<House?> DeleteHouse(int id)
+        {
+            var house = await _context.Houses.FindAsync(id);
+            if (house == null)
+                return null;
+            _context.Chores.RemoveRange(house.Chores);
+            _context.HouseUsers.RemoveRange(house.HouseUsers);
+            _context.Rewards.RemoveRange(house.Rewards);
+            _context.Houses.Remove(house);
+            await _context.SaveChangesAsync();
+            return house;
         }
     }
 }
