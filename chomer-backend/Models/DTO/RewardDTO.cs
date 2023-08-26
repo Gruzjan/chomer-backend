@@ -17,7 +17,16 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "HouseId is required.")]
         public int HouseId { get; set; }
     }
-
+    public class UpdateRewardDTO 
+    {
+        [StringLength(100, ErrorMessage = "Name must be between {2} and {1} characters.", MinimumLength = 2)]
+        public string? Name { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Cost must be a positive number.")]
+        public int? Cost { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be greater or equal {1}.")]
+        public int? Quantity { get; set; }
+        public int? HouseId { get; set; }
+    }
     public class RewardDTO : CreateRewardDTO
     {
         [Required(ErrorMessage = "Id is required.")]

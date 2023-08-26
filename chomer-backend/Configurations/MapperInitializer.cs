@@ -18,6 +18,7 @@ namespace chomer_backend.Configurations
             CreateMap<House, CreateHouseDTO>().ReverseMap();
             CreateMap<Chore, ChoreDTO>().ReverseMap();
             CreateMap<Chore, CreateChoreDTO>().ReverseMap();
+            CreateMap<Chore, UpdateChoreDTO>().ReverseMap();
         }
     }
 }

@@ -21,8 +21,9 @@ namespace chomer_backend.Controllers
             _mapper = mapper;
         }
         [HttpPost]
-        public async Task<ActionResult> CreateReward(Reward reward)
+        public async Task<ActionResult> CreateReward(CreateRewardDTO rewardDTO)
         {
+            var reward = _mapper.Map<Reward>(rewardDTO);
             var result = await _service.CreateReward(reward);
             return Ok(result);
         }
@@ -59,8 +60,9 @@ namespace chomer_backend.Controllers
             }
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateReward(int id, Reward request)
+        public async Task<ActionResult> UpdateReward(int id, UpdateRewardDTO requestDTO)
         {
+            var request = _mapper.Map<Reward>(requestDTO);
             var result = await _service.UpdateReward(id, request);
             if (result == null)
                 return NotFound("Couldn't find the reward.");
@@ -69,9 +71,10 @@ namespace chomer_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReward(int id)
         {
-            var result = await _service.DeleteReward(id);
-            if (result == null)
+            var reward = await _service.DeleteReward(id);
+            if (reward == null)
                 return NotFound("Couldn't find the reward.");
+            var result = _mapper.Map<RewardDTO>(reward);
             return Ok(result);
         }
     }

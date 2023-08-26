@@ -36,25 +36,29 @@ namespace chomer_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetChoreById(int id)
         {
-            var result = await _service.GetChoreById(id);
-            if (result == null)
+            var chore = await _service.GetChoreById(id);
+            if (chore == null)
                 return NotFound("Coulnd't find the chore.");
+            var result = _mapper.Map<ChoreDTO>(chore);
             return Ok(result);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateChore(int id, Chore request)
+        public async Task<ActionResult> UpdateChore(int id, UpdateChoreDTO requestDTO)
         {
-            var result = await _service.UpdateChore(id, request);
-            if (result == null)
+            var request = _mapper.Map<Chore>(requestDTO);
+            var chore = await _service.UpdateChore(id, request);
+            if (chore == null)
                 return NotFound("Coulnd't find the chore.");
-            return Ok(result);
+
+            return Ok(chore);
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteChore(int id)
         {
-            var result = await _service.DeleteChore(id);
-            if (result == null)
+            var chore = await _service.DeleteChore(id);
+            if (chore == null)
                 return NotFound("Couldn't find the chore.");
+            var result = _mapper.Map<ChoreDTO>(chore);
             return Ok(result);
         }
     }

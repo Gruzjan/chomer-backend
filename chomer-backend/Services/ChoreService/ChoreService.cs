@@ -39,7 +39,8 @@ namespace chomer_backend.Services.ChoreService
             var chore = await _context.Chores.FindAsync(id);
             if (chore == null)
                 return null;
-            chore.Name = request.Name;
+            if(chore.Name != request.Name && request.Name != null)
+                chore.Name = request.Name;
             chore.Description = request.Description;
             chore.Value = request.Value;
             chore.AssignedToId = request.AssignedToId;
