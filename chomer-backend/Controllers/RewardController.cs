@@ -23,9 +23,17 @@ namespace chomer_backend.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateReward(CreateRewardDTO rewardDTO)
         {
-            var reward = _mapper.Map<Reward>(rewardDTO);
-            var result = await _service.CreateReward(reward);
-            return Ok(result);
+            try
+            {
+                var reward = _mapper.Map<Reward>(rewardDTO);
+                var result = await _service.CreateReward(reward);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(CreateReward)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpGet]
         public async Task<ActionResult> GetRewards()
@@ -62,20 +70,36 @@ namespace chomer_backend.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateReward(int id, UpdateRewardDTO requestDTO)
         {
-            var request = _mapper.Map<Reward>(requestDTO);
-            var result = await _service.UpdateReward(id, request);
-            if (result == null)
-                return NotFound("Couldn't find the reward.");
-            return Ok(result);
+            try
+            {
+                var request = _mapper.Map<Reward>(requestDTO);
+                var result = await _service.UpdateReward(id, request);
+                if (result == null)
+                    return NotFound("Couldn't find the reward.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(UpdateReward)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteReward(int id)
         {
-            var reward = await _service.DeleteReward(id);
-            if (reward == null)
-                return NotFound("Couldn't find the reward.");
-            var result = _mapper.Map<RewardDTO>(reward);
-            return Ok(result);
+            try
+            {
+                var reward = await _service.DeleteReward(id);
+                if (reward == null)
+                    return NotFound("Couldn't find the reward.");
+                var result = _mapper.Map<RewardDTO>(reward);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(GetRewards)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
     }
 }

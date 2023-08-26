@@ -3,9 +3,7 @@ using chomer_backend.Data;
 using chomer_backend.Models;
 using chomer_backend.Models.DTO;
 using chomer_backend.Services.UserService;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 
 namespace chomer_backend.Controllers
 {
@@ -26,9 +24,17 @@ namespace chomer_backend.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateUser(CreateUserDTO userDTO)
         {
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _service.CreateUser(user);
-            return Ok(result);
+            try
+            {
+                var user = _mapper.Map<User>(userDTO);
+                var result = await _service.CreateUser(user);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(CreateUser)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpGet]
         public async Task<ActionResult> GetUsers()
@@ -64,19 +70,35 @@ namespace chomer_backend.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateUser(int id, UpdateUserDTO requestDTO)
         {
-            var request = _mapper.Map<User>(requestDTO);
-            var result = await _service.UpdateUser(id, request);
-            if (result == null) return BadRequest("Something went wrong");
-            return Ok(result);
+            try
+            {
+                var request = _mapper.Map<User>(requestDTO);
+                var result = await _service.UpdateUser(id, request);
+                if (result == null) return BadRequest("Something went wrong");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(UpdateUser)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
-            var user = await _service.DeleteUser(id);
-            if (user == null)
-                return NotFound("Couldn't find the user.");
-            var result = _mapper.Map<UserDTO>(user);
-            return Ok(result);
+            try
+            {
+                var user = await _service.DeleteUser(id);
+                if (user == null)
+                    return NotFound("Couldn't find the user.");
+                var result = _mapper.Map<UserDTO>(user);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Something went wrong in the {nameof(DeleteUser)}");
+                return StatusCode(500, "Something went wrong. Please try again later.");
+            }
         }
     }
 }
