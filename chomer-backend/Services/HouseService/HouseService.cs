@@ -11,26 +11,23 @@ namespace chomer_backend.Services.HouseService
     {
         private readonly DataContext _context;
         private readonly IHouseUserService _HUservice;
-        private readonly IMapper _mapper;
-        public HouseService(DataContext context, IHouseUserService service, IMapper mapper)
+        public HouseService(DataContext context, IHouseUserService service)
         {
             _HUservice = service;
             _context = context;
-            _mapper = mapper;
         }
-        public async Task<House?> CreateHouse(CreateHouseDTO house)
+        public async Task<House?> CreateHouse(House house)
         {
-            var result = _mapper.Map<House>(house);
-            var user = await _context.Users.FindAsync(result.OwnerId);
+            var user = await _context.Users.FindAsync(house.OwnerId);
             if (user == null)
                 return null;
-            _context.Houses.Add(result);
+            _context.Houses.Add(house);
             await _context.SaveChangesAsync();
-            var houseuser = await _HUservice.CreateHouseUserByUserId(result.Id, result.OwnerId, true);
+            var houseuser = await _HUservice.CreateHouseUserByUserId(house.Id, house.OwnerId, true);
             if (houseuser == null)
                 return null;
             await _context.SaveChangesAsync();
-            return result;
+            return house;
         }
         public async Task<List<House>> GetHouses()
         {

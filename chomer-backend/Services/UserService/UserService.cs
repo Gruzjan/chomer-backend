@@ -18,16 +18,9 @@ namespace chomer_backend.Services.UserService
             await _context.SaveChangesAsync();
             return user;
         }
-        public async Task<User?> DeleteUser(int id)
+        public async Task<List<User>> GetUsers()
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-                return null;
-            _context.Houses.RemoveRange(user.Houses);
-            _context.HouseUsers.RemoveRange(user.HouseUsers);
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-            return user;
+            return await _context.Users.ToListAsync();
         }
         public async Task<User?> GetUserById(int id)
         {
@@ -35,10 +28,6 @@ namespace chomer_backend.Services.UserService
             if (user == null)
                 return null;
             return user;
-        }
-        public async Task<List<User>> GetUsers()
-        {
-            return await _context.Users.ToListAsync();
         }
         public async Task<User?> UpdateUser(int id, User request)
         {
@@ -50,6 +39,17 @@ namespace chomer_backend.Services.UserService
             user.Name = request.Name;
             user.Email = request.Email;
             user.Password = request.Password;
+            await _context.SaveChangesAsync();
+            return user;
+        }
+        public async Task<User?> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return null;
+            _context.Houses.RemoveRange(user.Houses);
+            _context.HouseUsers.RemoveRange(user.HouseUsers);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
             return user;
         }

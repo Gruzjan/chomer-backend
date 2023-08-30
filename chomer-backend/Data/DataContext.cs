@@ -138,7 +138,6 @@ namespace chomer_backend.Data
                     HouseId = 1
                 }
             );
-            //base.OnModelCreating(modelBuilder);
         }
     }
 }

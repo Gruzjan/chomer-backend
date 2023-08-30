@@ -21,10 +21,11 @@ namespace chomer_backend.Controllers
             _mapper = mapper;
         }
         [HttpPost]
-        public async Task<ActionResult> CreateHouse(CreateHouseDTO house)
+        public async Task<ActionResult> CreateHouse(CreateHouseDTO houseDTO)
         {
             try
             {
+                var house = _mapper.Map<House>(houseDTO);
                 var result = await _service.CreateHouse(house);
                 return Ok(result);
             }

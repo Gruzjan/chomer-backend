@@ -5,7 +5,7 @@ namespace chomer_backend.Services.HouseService
 {
     public interface IHouseService
     {
-        Task<House?> CreateHouse(CreateHouseDTO house);
+        Task<House?> CreateHouse(House house);
         Task<List<House>> GetHouses();
         Task<House?> GetHouseById(int houseId, IList<string> includeProperties = null);
         Task<House?> UpdateHouse(int houseId, House request);
