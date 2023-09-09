@@ -57,10 +57,10 @@ namespace chomer_backend.Services.HouseUserService
         }
         public async Task<HouseUser?> GetHouseUserById(int id, IList<string> includeProperties = null)
         {
-            var query = _context.HouseUsers;
+            IQueryable<HouseUser> query = _context.HouseUsers;
             if (includeProperties != null)
                 foreach (var prop in includeProperties)
-                    query.Include(prop);
+                    query = query.Include(prop);
             var user = await query.FirstOrDefaultAsync(u => u.Id == id);
             if (user == null)
                 return null;

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace chomer_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users/{userId}/houses/{houseId}/rewards")]
     [ApiController]
     public class RewardController : ControllerBase
     {

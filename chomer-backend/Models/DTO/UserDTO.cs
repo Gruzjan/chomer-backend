@@ -37,5 +37,7 @@ namespace chomer_backend.Models.DTO
         [Required]
         [MinLength(8)]
         public string Password { get; set; } = string.Empty;
+        public virtual IList<House> Houses { get; set; }
+        public virtual IList<HouseUser> HouseUsers { get; set; }
     }
 }

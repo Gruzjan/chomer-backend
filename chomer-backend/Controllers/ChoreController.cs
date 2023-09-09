@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace chomer_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users/{userId}/houses/{houseId}/chores")]
     [ApiController]
     public class ChoreController : ControllerBase
     {
@@ -56,7 +56,7 @@ namespace chomer_backend.Controllers
         {
             try
             {
-                var chore = await _service.GetChoreById(id);
+                var chore = await _service.GetChoreById(id, new List<string>() { "AssignedTo", "CreatedBy", "House" });
                 if (chore == null)
                     return NotFound("Coulnd't find the chore.");
                 var result = _mapper.Map<ChoreDTO>(chore);

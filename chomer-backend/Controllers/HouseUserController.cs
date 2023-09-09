@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace chomer_backend.Controllers
 {
-    [Route("api/House/HouseUsers")]
+    [Route("api/users/{userId}/houses/{houseId}/members")]
     [ApiController]
     public class HouseUserController : ControllerBase
     {
@@ -58,8 +58,7 @@ namespace chomer_backend.Controllers
         {
             try
             {
-                //var result = await _service.GetHouseUserById(id, new List<string>() {"House"});
-                var user = await _service.GetHouseUserById(id);
+                var user = await _service.GetHouseUserById(id, new List<string>() { "House", "User", "AssignedChores", "CreatedChores" });
                 if (user == null)
                     return NotFound("Couldn't find the user.");
                 var result = _mapper.Map<HouseUserDTO>(user);

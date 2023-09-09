@@ -22,9 +22,13 @@ namespace chomer_backend.Services.UserService
         {
             return await _context.Users.ToListAsync();
         }
-        public async Task<User?> GetUserById(int id)
+        public async Task<User?> GetUserById(int id, IList<string> includeProperties = null)
         {
-            var user = await _context.Users.FindAsync(id);
+            IQueryable<User> query = _context.Users;
+            if (includeProperties != null)
+                foreach (var prop in includeProperties)
+                    query = query.Include(prop);
+            var user = await query.FirstOrDefaultAsync(r => r.Id == id);
             if (user == null)
                 return null;
             return user;

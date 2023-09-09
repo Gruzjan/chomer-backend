@@ -12,8 +12,8 @@ using chomer_backend.Data;
 namespace chomer_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230820143640_inital")]
-    partial class inital
+    [Migration("20230830171255_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

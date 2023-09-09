@@ -24,10 +24,10 @@ namespace chomer_backend.Services.RewardService
         }
         public async Task<Reward?> GetRewardById(int id, IList<string> includeProperties = null)
         {
-            var query = _context.Rewards;
+            IQueryable<Reward> query = _context.Rewards;
             if (includeProperties != null)
                 foreach (var prop in includeProperties)
-                    query.Include(prop);
+                    query = query.Include(prop);
             var reward = await query.FirstOrDefaultAsync(r => r.Id == id);
             if (reward == null)
                 return null;
