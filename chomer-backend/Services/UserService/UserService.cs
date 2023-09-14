@@ -42,7 +42,6 @@ namespace chomer_backend.Services.UserService
                 return null;
             user.Name = request.Name;
             user.Email = request.Email;
-            user.Password = request.Password;
             await _context.SaveChangesAsync();
             return user;
         }

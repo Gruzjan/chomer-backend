@@ -7,6 +7,8 @@ using chomer_backend.Services.RewardService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
+using chomer_backend.Models;
 
 namespace chomer_backend
 {
@@ -45,6 +47,10 @@ namespace chomer_backend
             });
             //automapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            //identity
+            builder.Services.AddIdentity<User, IdentityRole<int>>(options => { options.User.RequireUniqueEmail = true; options.Password.RequiredLength = 8; })
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -60,7 +66,7 @@ namespace chomer_backend
             }
 
             //app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

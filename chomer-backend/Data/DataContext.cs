@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using chomer_backend.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace chomer_backend.Data
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         public DbSet<Chore> Chores { get; set; }
@@ -14,6 +16,7 @@ namespace chomer_backend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Chore>()
                 .HasOne(ch => ch.AssignedTo)
                 .WithMany(hu => hu.AssignedChores)
@@ -54,22 +57,19 @@ namespace chomer_backend.Data
                 {
                     Id = 1,
                     Name = "Pablo",
-                    Email = "pablo@gmail.com",
-                    Password = "Paword"
+                    Email = "pablo@gmail.com"
                 },
                 new User
                 {
                     Id = 2,
                     Name = "Gustavo",
-                    Email = "gustav@gmail.com",
-                    Password = "Gusword"
+                    Email = "gustav@gmail.com"
                 },
                 new User
                 {
                     Id = 3,
                     Name = "Walter",
-                    Email = "walt@gmail.com",
-                    Password = "Walword"
+                    Email = "walt@gmail.com"
                 }
             );
             modelBuilder.Entity<House>().HasData(
@@ -138,6 +138,18 @@ namespace chomer_backend.Data
                     HouseId = 1
                 }
             );
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                },
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                }
+                );
         }
     }
 }
