@@ -28,5 +28,8 @@ namespace chomer_backend.Models.DTO
         public User User { get; set; }
         [Required(ErrorMessage = "House is required.")]
         public House House { get; set; }
+        public IList<Chore> AssignedChores { get; set; }
+        public IList<Chore> CreatedChores { get; set; }
+
     }
 }

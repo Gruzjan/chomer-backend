@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace chomer_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users/{userId}/houses")]
     [ApiController]
     public class HouseController : ControllerBase
     {
@@ -21,10 +21,11 @@ namespace chomer_backend.Controllers
             _mapper = mapper;
         }
         [HttpPost]
-        public async Task<ActionResult> CreateHouse(CreateHouseDTO house)
+        public async Task<ActionResult> CreateHouse(CreateHouseDTO houseDTO)
         {
             try
             {
+                var house = _mapper.Map<House>(houseDTO);
                 var result = await _service.CreateHouse(house);
                 return Ok(result);
             }
@@ -54,7 +55,7 @@ namespace chomer_backend.Controllers
         {
             try
             {
-                var house = await _service.GetHouseById(id);
+                var house = await _service.GetHouseById(id, new List<string>() { "Owner", "HouseUsers", "Chores", "Rewards"});
                 if (house == null)
                     return NotFound("Couldn't find the house.");
                 var result = _mapper.Map<HouseDTO>(house);

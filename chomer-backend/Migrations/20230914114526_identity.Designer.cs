@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using chomer_backend.Data;
 
@@ -11,9 +12,11 @@ using chomer_backend.Data;
 namespace chomer_backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230914114526_identity")]
+    partial class identity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,6 +361,7 @@ namespace chomer_backend.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -381,6 +385,10 @@ namespace chomer_backend.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -418,11 +426,12 @@ namespace chomer_backend.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f8d2e68b-3636-451e-9671-16771624b367",
+                            ConcurrencyStamp = "54dc00be-37ae-4922-93c1-26341d6c91de",
                             Email = "pablo@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Pablo",
+                            Password = "Paword",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -430,11 +439,12 @@ namespace chomer_backend.Migrations
                         {
                             Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "af52547b-08bd-4e69-b52e-b20a55db4b9b",
+                            ConcurrencyStamp = "aa6c857d-6a5c-4eab-9ca3-6c3ee1b2c920",
                             Email = "gustav@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Gustavo",
+                            Password = "Gusword",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         },
@@ -442,11 +452,12 @@ namespace chomer_backend.Migrations
                         {
                             Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7922a2fc-3a11-4848-b897-a0e62c7dcb48",
+                            ConcurrencyStamp = "ec9fceef-7323-473c-86bc-80e9a5e0b50c",
                             Email = "walt@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Walter",
+                            Password = "Walword",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false
                         });

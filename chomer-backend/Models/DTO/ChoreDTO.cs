@@ -35,8 +35,8 @@ namespace chomer_backend.Models.DTO
         [Required(ErrorMessage = "House is required.")]
         public HouseDTO House { get; set; }
         [Required(ErrorMessage = "Creator is required.")]
-        public UserDTO CreatedBy { get; set; }
+        public HouseUserDTO CreatedBy { get; set; }
         [Required(ErrorMessage = "Asignee is required.")]
-        public UserDTO? AssignedTo { get; set; }
+        public HouseUserDTO? AssignedTo { get; set; }
     }
 }

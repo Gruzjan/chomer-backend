@@ -24,10 +24,10 @@ namespace chomer_backend.Services.ChoreService
 
         public async Task<Chore?> GetChoreById(int id, IList<string> includeProperties = null)
         {
-            var query = _context.Chores;
+            IQueryable<Chore> query = _context.Chores;
             if (includeProperties != null)
                 foreach (var prop in includeProperties)
-                    query.Include(prop);
+                    query = query.Include(prop);
             var chore = await query.FirstOrDefaultAsync(c => c.Id == id);
             if (chore == null)
                 return null;
